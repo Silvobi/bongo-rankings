@@ -1,0 +1,31 @@
+plugins { id 'net.fabricmc.fabric-loom' version '1.17.12' }
+version = '1.0.1'
+group = 'pl.bongo'
+base { archivesName = 'BongoRankings' }
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:26.3'
+    implementation 'net.fabricmc:fabric-loader:0.19.5'
+    implementation 'net.fabricmc.fabric-api:fabric-api:0.161.0+26.3'
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+java { toolchain.languageVersion = JavaLanguageVersion.of(25); withSourcesJar() }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8'; options.release = 25 }
+processResources { inputs.property 'version', project.version; filesMatching('fabric.mod.json') { expand version: project.version } }
+test { useJUnitPlatform() }
+tasks.register('integrationTest', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'pl.bongo.rankings.IntegrationHarness'
+    args(project.findProperty('testPort') ?: '25589')
+    if (project.hasProperty('restartCheck')) args('restart')
+    if (project.hasProperty('closeCheck')) args('close')
+}
+tasks.register('probeJar', Jar) {
+    dependsOn testClasses
+    archiveFileName = 'rankings-test-probe.jar'
+    from(sourceSets.test.output) { include 'pl/bongo/rankings/TestProbe.class' }
+    from('src/test/probe')
+}

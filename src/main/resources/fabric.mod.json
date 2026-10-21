@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "bongo_rankings",
+  "version": "${version}",
+  "name": "BongoRankings",
+  "description": "Server-side TOP 10 dialogs, Polish and English, with asynchronous persistence.",
+  "authors": ["Bongo"],
+  "environment": "server",
+  "entrypoints": { "main": ["pl.bongo.rankings.BongoRankings"] },
+  "mixins": ["bongo-rankings.mixins.json"],
+  "depends": { "fabricloader": ">=0.19.5", "minecraft": "~26.3", "java": ">=25", "fabric-api": ">=0.161.0" }
+}

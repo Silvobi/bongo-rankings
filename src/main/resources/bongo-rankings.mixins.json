@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "pl.bongo.rankings.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": ["StatsAccess", "DialogClickMixin", "ExperienceMixin", "BlockPlaceMixin"],
+  "injectors": { "defaultRequire": 1 }
+}
